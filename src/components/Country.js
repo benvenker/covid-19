@@ -50,14 +50,16 @@ const Country = props => {
                   <th>Date</th>
                   <th>Cases</th>
                 </tr>
-                {confirmed.map(confirm => {
-                  return (
-                    <tr>
-                      <td>{confirm.Date}</td>
-                      <td>{confirm.Cases}</td>
-                    </tr>
-                  );
-                })}
+                {confirmed === [] || confirmed === null
+                  ? ""
+                  : confirmed.map(confirm => {
+                      return (
+                        <tr>
+                          <td>{confirm.Date}</td>
+                          <td>{confirm.Cases}</td>
+                        </tr>
+                      );
+                    })}
               </tbody>
             </table>
           </section>
@@ -71,7 +73,7 @@ const Country = props => {
                   <th>Date</th>
                   <th>Cases</th>
                 </tr>
-                {recovered === []
+                {recovered === [] || recovered === null
                   ? ""
                   : recovered.map(el => {
                       return (
@@ -94,7 +96,7 @@ const Country = props => {
                   <th>Date</th>
                   <th>Cases</th>
                 </tr>
-                {deaths === []
+                {deaths === [] || deaths === null
                   ? ""
                   : deaths.map(el => {
                       return (
