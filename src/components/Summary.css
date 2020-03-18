@@ -1,0 +1,7 @@
+.table-header .header-row {
+  overflow: hidden;
+}
+
+th {
+  padding: 5px;
+}

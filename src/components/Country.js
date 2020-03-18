@@ -26,7 +26,7 @@ const Country = props => {
     axios
       .get(`https://api.covid19api.com/dayone/country/${slug}/status/recovered`)
       .then(response => response.data)
-      .then(data => setRecovered([data]));
+      .then(data => setRecovered(data));
   }, []);
 
   // Get Deaths
@@ -34,31 +34,81 @@ const Country = props => {
     axios
       .get(`https://api.covid19api.com/dayone/country/${slug}/status/deaths`)
       .then(response => response.data)
-      .then(data => setDeaths([data]));
+      .then(data => setDeaths(data));
   }, []);
 
   return (
     <div className="country-container">
       <h1>{slug.split("-").join(" ")}</h1>
-      <h2>Confirmed</h2>
-      <section>
-        <table>
-          <tbody>
-            <tr>
-              <th>Date</th>
-              <th>Cases</th>
-            </tr>
-            {confirmed.map(confirm => {
-              return (
+      <div className="results-container">
+        <div className="confirmed-cases">
+          <h2>Confirmed</h2>
+          <section>
+            <table>
+              <tbody>
                 <tr>
-                  <td>{confirm.Date}</td>
-                  <td>{confirm.Cases}</td>
+                  <th>Date</th>
+                  <th>Cases</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </section>
+                {confirmed.map(confirm => {
+                  return (
+                    <tr>
+                      <td>{confirm.Date}</td>
+                      <td>{confirm.Cases}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </section>
+        </div>
+        <div className="recovered-cases">
+          <h2>Recovered</h2>
+          <section>
+            <table>
+              <tbody>
+                <tr>
+                  <th>Date</th>
+                  <th>Cases</th>
+                </tr>
+                {recovered === []
+                  ? ""
+                  : recovered.map(el => {
+                      return (
+                        <tr>
+                          <td>{el.Date}</td>
+                          <td>{el.Cases}</td>
+                        </tr>
+                      );
+                    })}
+              </tbody>
+            </table>
+          </section>
+        </div>
+        <div className="confirmed-cases">
+          <h2>Deaths</h2>
+          <section>
+            <table>
+              <tbody>
+                <tr>
+                  <th>Date</th>
+                  <th>Cases</th>
+                </tr>
+                {deaths === []
+                  ? ""
+                  : deaths.map(el => {
+                      return (
+                        <tr>
+                          <td>{el.Date}</td>
+                          <td>{el.Cases}</td>
+                        </tr>
+                      );
+                    })}
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./Summary.css";
 import axios from "axios";
 
 const Summary = () => {
@@ -16,7 +17,7 @@ const Summary = () => {
       <h1>COVID Outbreak Summary</h1>
       <table>
         <tbody>
-          <tr>
+          <tr className="header-row">
             <th>Country</th>
             <th>New Confirmed</th>
             <th>Total Confirmed</th>
@@ -24,6 +25,45 @@ const Summary = () => {
             <th>Total Deaths</th>
             <th>New Recovered</th>
             <th>Total Recovered</th>
+          </tr>
+          <tr>
+            <td>All</td>
+            <td>
+              {Object.values(countries).reduce(
+                (total, { NewConfirmed }) => total + NewConfirmed,
+                0
+              )}
+            </td>
+            <td>
+              {Object.values(countries).reduce(
+                (total, { TotalConfirmed }) => total + TotalConfirmed,
+                0
+              )}
+            </td>
+            <td>
+              {Object.values(countries).reduce(
+                (total, { NewDeaths }) => total + NewDeaths,
+                0
+              )}
+            </td>
+            <td>
+              {Object.values(countries).reduce(
+                (total, { TotalDeaths }) => total + TotalDeaths,
+                0
+              )}
+            </td>
+            <td>
+              {Object.values(countries).reduce(
+                (total, { NewRecovered }) => total + NewRecovered,
+                0
+              )}
+            </td>
+            <td>
+              {Object.values(countries).reduce(
+                (total, { TotalRecovered }) => total + TotalRecovered,
+                0
+              )}
+            </td>
           </tr>
           {countries.map(country => {
             return (
@@ -46,6 +86,45 @@ const Summary = () => {
               </tr>
             );
           })}
+          <tr>
+            <td>All</td>
+            <td>
+              {Object.values(countries).reduce(
+                (total, { NewConfirmed }) => total + NewConfirmed,
+                0
+              )}
+            </td>
+            <td>
+              {Object.values(countries).reduce(
+                (total, { TotalConfirmed }) => total + TotalConfirmed,
+                0
+              )}
+            </td>
+            <td>
+              {Object.values(countries).reduce(
+                (total, { NewDeaths }) => total + NewDeaths,
+                0
+              )}
+            </td>
+            <td>
+              {Object.values(countries).reduce(
+                (total, { TotalDeaths }) => total + TotalDeaths,
+                0
+              )}
+            </td>
+            <td>
+              {Object.values(countries).reduce(
+                (total, { NewRecovered }) => total + NewRecovered,
+                0
+              )}
+            </td>
+            <td>
+              {Object.values(countries).reduce(
+                (total, { TotalRecovered }) => total + TotalRecovered,
+                0
+              )}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
