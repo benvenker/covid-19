@@ -42,6 +42,24 @@ const Country = props => {
       <h1>{slug.split("-").join(" ")}</h1>
       <div className="results-container">
         <div className="confirmed-cases">
+          Confirmed:{" "}
+          {confirmed === null || confirmed === undefined
+            ? "N/A"
+            : Object.values(confirmed).reduce(
+                (t, { Cases }) => (t += Cases),
+                0
+              )}
+          {"  "} Deaths:{" "}
+          {deaths === null || confirmed === undefined
+            ? "N/A"
+            : Object.values(deaths).reduce((t, { Cases }) => (t += Cases), 0)}
+          {"  "} Recovered:{" "}
+          {recovered === null || confirmed === undefined
+            ? "N/A"
+            : Object.values(recovered).reduce(
+                (t, { Cases }) => (t += Cases),
+                0
+              )}
           <h2>Confirmed</h2>
           <section>
             <table>

@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./Summary.css";
 import axios from "axios";
+import { useTable, useSortBy } from "react-table";
 
 const Summary = () => {
   const [countries, setCountries] = useState([]);
+  const [column, setColumn] = useState(null);
+  const [sort, setSort] = useState({ column: null, direction: "desc" });
 
   useEffect(() => {
     axios
@@ -12,121 +15,95 @@ const Summary = () => {
       .then(data => setCountries(data.Countries));
   });
 
+  const columns = [
+    {
+      Header: "Country",
+      accessor: "Country"
+    },
+    {
+      Header: "Total Confirmed",
+      accessor: "TotalConfirmed"
+    },
+    {
+      Header: "New Deaths",
+      accessor: "NewDeaths"
+    },
+    {
+      Header: "Total Deaths",
+      accessor: "Total Deaths"
+    },
+    {
+      Header: "New Recovered",
+      accessor: "NewRecovered"
+    },
+    {
+      Header: "Total Recovered",
+      accessor: "TotalRecovered"
+    }
+  ];
+
+  function Table({ columns, data }) {
+    const {
+      getTableProps,
+      getTableBodyProps,
+      headerGroups,
+      rows,
+      prepareRow
+    } = useTable({ columns, data }, useSortBy);
+
+    const handleClick = event => {
+      console.log("clicked!");
+    };
+    // Render Data Table UI
+    return (
+      <div>
+        <h1>Test</h1>
+        <table {...getTableProps()}>
+          <thead>
+            {headerGroups.map(headerGroup => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map(column => (
+                  <th
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                    onClick={() => handleClick()}
+                  >
+                    {column.render("Header")}
+                    {/* Add a sort direction indicator */}
+                    <span>
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? " 🔽"
+                          : " 🔼"
+                        : ""}
+                    </span>
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row, i) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map(cell => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
   return (
     <div className="summary-container">
       <h1>COVID Outbreak Summary</h1>
-      <table>
-        <tbody>
-          <tr className="header-row">
-            <th>Country</th>
-            <th>New Confirmed</th>
-            <th>Total Confirmed</th>
-            <th>New Deaths</th>
-            <th>Total Deaths</th>
-            <th>New Recovered</th>
-            <th>Total Recovered</th>
-          </tr>
-          <tr>
-            <td>All</td>
-            <td>
-              {Object.values(countries).reduce(
-                (total, { NewConfirmed }) => total + NewConfirmed,
-                0
-              )}
-            </td>
-            <td>
-              {Object.values(countries).reduce(
-                (total, { TotalConfirmed }) => total + TotalConfirmed,
-                0
-              )}
-            </td>
-            <td>
-              {Object.values(countries).reduce(
-                (total, { NewDeaths }) => total + NewDeaths,
-                0
-              )}
-            </td>
-            <td>
-              {Object.values(countries).reduce(
-                (total, { TotalDeaths }) => total + TotalDeaths,
-                0
-              )}
-            </td>
-            <td>
-              {Object.values(countries).reduce(
-                (total, { NewRecovered }) => total + NewRecovered,
-                0
-              )}
-            </td>
-            <td>
-              {Object.values(countries).reduce(
-                (total, { TotalRecovered }) => total + TotalRecovered,
-                0
-              )}
-            </td>
-          </tr>
-          {countries.map(country => {
-            return (
-              <tr>
-                <td>
-                  <a
-                    href={`country/${country.Country.toLowerCase()
-                      .split(" ")
-                      .join("-")}`}
-                  >
-                    {country.Country}
-                  </a>
-                </td>
-                <td>{country.NewConfirmed}</td>
-                <td>{country.TotalConfirmed}</td>
-                <td>{country.NewDeaths}</td>
-                <td>{country.TotalDeaths}</td>
-                <td>{country.NewRecovered}</td>
-                <td>{country.TotalRecovered}</td>
-              </tr>
-            );
-          })}
-          <tr>
-            <td>All</td>
-            <td>
-              {Object.values(countries).reduce(
-                (total, { NewConfirmed }) => total + NewConfirmed,
-                0
-              )}
-            </td>
-            <td>
-              {Object.values(countries).reduce(
-                (total, { TotalConfirmed }) => total + TotalConfirmed,
-                0
-              )}
-            </td>
-            <td>
-              {Object.values(countries).reduce(
-                (total, { NewDeaths }) => total + NewDeaths,
-                0
-              )}
-            </td>
-            <td>
-              {Object.values(countries).reduce(
-                (total, { TotalDeaths }) => total + TotalDeaths,
-                0
-              )}
-            </td>
-            <td>
-              {Object.values(countries).reduce(
-                (total, { NewRecovered }) => total + NewRecovered,
-                0
-              )}
-            </td>
-            <td>
-              {Object.values(countries).reduce(
-                (total, { TotalRecovered }) => total + TotalRecovered,
-                0
-              )}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <Table data={countries} columns={columns} />
     </div>
   );
 };
